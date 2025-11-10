@@ -59,6 +59,18 @@ export default function VoiceChat({ onClose, userName, userGender }: VoiceChatPr
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, transcript]);
 
+  const renderWave = (variant: 'default' | 'light' | 'muted' = 'default') => (
+    <div
+      className={`voice-wave ${
+        variant === 'light' ? 'voice-wave--light' : variant === 'muted' ? 'voice-wave--muted' : ''
+      }`}
+    >
+      {[...Array(5)].map((_, index) => (
+        <span key={index} />
+      ))}
+    </div>
+  );
+
   const handleToggleMic = async () => {
     if (isListening) {
       try {
@@ -117,7 +129,7 @@ export default function VoiceChat({ onClose, userName, userGender }: VoiceChatPr
             onClick={handleToggleMic}
             className={`rounded-lg p-2 transition-colors ${
               isListening ? 'bg-blue-50 text-blue-600 hover:bg-blue-100' : 'text-slate-600 hover:bg-slate-100'
-            }`}
+            } ${isListening ? 'relative listening-pulse' : ''}`}
             aria-label={isListening ? 'Mute microphone' : 'Unmute microphone'}
             title={isListening ? 'Mute your microphone' : 'Unmute your microphone'}
           >
@@ -185,16 +197,29 @@ export default function VoiceChat({ onClose, userName, userGender }: VoiceChatPr
 
           {transcript && (
             <div className="flex justify-end">
-              <div className="max-w-[85%] rounded-2xl bg-blue-500 px-4 py-2.5 text-sm text-white opacity-80 sm:max-w-md sm:px-5 sm:py-3 sm:text-base">
-                {transcript}
+              <div className="flex max-w-[85%] items-center gap-3 rounded-2xl bg-blue-500 px-4 py-2.5 text-sm text-white opacity-80 shadow-sm sm:max-w-md sm:px-5 sm:py-3 sm:text-base">
+                <span>{transcript}</span>
+                {renderWave('light')}
+              </div>
+            </div>
+          )}
+
+          {isListening && !transcript && (
+            <div className="flex justify-end">
+              <div className="flex items-center gap-3 rounded-2xl bg-blue-600 px-4 py-2.5 text-sm text-white shadow-sm sm:px-5 sm:py-3 sm:text-base">
+                <span>Listening...</span>
+                {renderWave('light')}
               </div>
             </div>
           )}
 
           {isSpeaking && (
             <div className="flex justify-start">
-              <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-600 shadow-sm sm:px-5 sm:py-3 sm:text-base">
-                <Volume2 className="h-4 w-4 sm:h-5 sm:w-5" />
+              <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-600 shadow-sm sm:px-5 sm:py-3 sm:text-base">
+                <div className="hidden sm:block">
+                  {renderWave('muted')}
+                </div>
+                <div className="sm:hidden">{renderWave()}</div>
                 <span>AI is speaking...</span>
               </div>
             </div>
