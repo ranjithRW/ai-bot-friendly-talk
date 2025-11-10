@@ -36,9 +36,6 @@ function App() {
           {!showForm ? (
             <>
               <header className="mb-12 text-center">
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-600 text-white">
-                  <MessageSquare className="h-8 w-8" />
-                </div>
                 <h1 className="text-3xl font-semibold text-slate-900 sm:text-4xl">Friendly AI Chat</h1>
                 <p className="mx-auto mt-3 max-w-2xl text-base text-slate-600 sm:text-lg">
                   Have a natural voice conversation with your AI companion.
