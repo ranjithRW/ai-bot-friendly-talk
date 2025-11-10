@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import VoiceChat from './components/VoiceChat';
-import { MessageSquare } from 'lucide-react';
 
 interface UserInfo {
   name: string;
